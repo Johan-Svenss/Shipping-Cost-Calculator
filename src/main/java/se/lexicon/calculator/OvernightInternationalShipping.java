@@ -7,26 +7,22 @@ import se.lexicon.model.ShippingRequest;
 import se.lexicon.model.Speed;
 import se.lexicon.service.ShippingCostCalculator;
 
-/**
- * This class will be registered as a component
- * Spring will automatically find this class by scanning this package, if not exclude it
- */
+
 @Component
-public class StandardDomesticShipping implements ShippingCostCalculator {
+public class OvernightInternationalShipping implements ShippingCostCalculator {
 
     @PostConstruct
-    private void  init()
-    {
-        System.out.println("Standard Domestic Shipping Calculator");
+    public void init() {
+        System.out.println("Overnight International Shipping Calculator");
     }
 
     @Override
     public boolean supports(ShippingRequest r) {
-        return r.destination() == Destination.DOMESTIC && r.speed() == Speed.STANDARD;
+        return r.destination() == Destination.INTERNATIONAL && r.speed() == Speed.OVERNIGHT;
     }
 
     @Override
     public double calculate(ShippingRequest r) {
-        return 5 + 1.2 * r.weightKg();
+        return 40 + 7.5 * r.weightKg();
     }
 }

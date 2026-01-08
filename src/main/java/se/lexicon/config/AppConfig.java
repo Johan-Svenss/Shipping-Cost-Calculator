@@ -2,16 +2,18 @@ package se.lexicon.config;
 
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import se.lexicon.calculator.ExpressInternationalShipping;
+import se.lexicon.calculator.OvernightInternationalShipping;
 import se.lexicon.calculator.StandardDomesticShipping;
 import se.lexicon.service.ShippingCalculatorFactory;
-import se.lexicon.service.ShippingCostCalculator;
 import se.lexicon.service.ShippingService;
 
 import java.util.List;
 
 @Configuration
+@ComponentScan(basePackages = "se.lexicon.calculator")
 public class AppConfig {
 
     // Define the factory of shipping calculator
@@ -20,7 +22,8 @@ public class AppConfig {
         return new ShippingCalculatorFactory(
                 List.of(
                     new StandardDomesticShipping(),
-                    new ExpressInternationalShipping()
+                    new ExpressInternationalShipping(),
+                    new OvernightInternationalShipping()
             )
         );
     }

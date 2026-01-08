@@ -3,6 +3,7 @@ package se.lexicon;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import se.lexicon.calculator.ExpressInternationalShipping;
+import se.lexicon.calculator.OvernightInternationalShipping;
 import se.lexicon.calculator.StandardDomesticShipping;
 import se.lexicon.config.AppConfig;
 import se.lexicon.model.Destination;
@@ -36,6 +37,15 @@ public class Main {
         );
 
         System.out.println("Domestic standart: " + shippingService.quote(domesticStandardRequest));
+
+
+        ShippingRequest overNightInternationalShippment = new ShippingRequest(
+                Destination.INTERNATIONAL,
+                Speed.OVERNIGHT,
+                250.0
+        );
+
+        System.out.println("OvernightInternational:" + shippingService.quote(overNightInternationalShippment));
 
     }
 }

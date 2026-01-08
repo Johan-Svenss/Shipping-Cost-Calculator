@@ -3,6 +3,7 @@ package se.lexicon.service;
 import se.lexicon.model.ShippingRequest;
 
 public class ShippingService {
+
     private final ShippingCalculatorFactory factory;
 
     public ShippingService(ShippingCalculatorFactory factory) {
