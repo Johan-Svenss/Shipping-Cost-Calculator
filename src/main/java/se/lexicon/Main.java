@@ -1,7 +1,10 @@
 package se.lexicon;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import se.lexicon.calculator.ExpressInternationalShipping;
 import se.lexicon.calculator.StandardDomesticShipping;
+import se.lexicon.config.AppConfig;
 import se.lexicon.model.Destination;
 import se.lexicon.model.ShippingRequest;
 import se.lexicon.model.Speed;
@@ -14,27 +17,25 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        // Manual object creation (composition root)
-        List<ShippingCostCalculator> calculators = List.of(
-                new StandardDomesticShipping(),
-                new ExpressInternationalShipping()
+        // Create the Spring Application Context with our Configuration
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        // Get the service bean from the spring context
+        ShippingService shippingService = context.getBean(ShippingService.class);
+
+        // Test the shipping service implementation
+        testShippment(shippingService);
+
+    }
+
+    private static void testShippment(ShippingService shippingService) {
+        ShippingRequest domesticStandardRequest = new ShippingRequest(
+                Destination.DOMESTIC,
+                Speed.STANDARD,
+                250.0
         );
 
+        System.out.println("Domestic standart: " + shippingService.quote(domesticStandardRequest));
 
-        ShippingCalculatorFactory factory = new ShippingCalculatorFactory(calculators);
-        
-        ShippingService shippingService = new ShippingService(factory);
-
-        ShippingRequest domesticStandardRequest = new ShippingRequest(Destination.DOMESTIC, Speed.STANDARD, 10.0);
-        System.out.println("Shipping cost: " + shippingService.quote(domesticStandardRequest));
-
-        ShippingRequest internationalExpressRequest = new ShippingRequest(Destination.INTERNATIONAL, Speed.EXPRESS, 15.0);
-        System.out.println("Shipping cost: " + shippingService.quote(internationalExpressRequest));
-
-        ShippingRequest lightDomesticRequest = new ShippingRequest(Destination.DOMESTIC, Speed.STANDARD, 5.0);
-        System.out.println("Shipping cost: " + shippingService.quote(lightDomesticRequest));
-
-        ShippingRequest heavyInternationalExpressRequest = new ShippingRequest(Destination.INTERNATIONAL, Speed.EXPRESS, 20.0);
-        System.out.println("Shipping cost: " + shippingService.quote(heavyInternationalExpressRequest));
     }
 }
