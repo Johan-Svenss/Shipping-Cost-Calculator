@@ -1,6 +1,7 @@
 package se.lexicon.calculator;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import se.lexicon.model.Destination;
 import se.lexicon.model.ShippingRequest;
@@ -14,6 +15,12 @@ import se.lexicon.service.ShippingCostCalculator;
 @Component
 public class ExpressInternationalShipping implements ShippingCostCalculator {
 
+    @Value("${shipping.international.express.base.fee}")
+    private double baseFee;
+
+    @Value("${shipping.international.express.cost.kg}")
+    private double costPerKg;
+
     @PostConstruct
     private void init() {
         System.out.println("ExpressInternationalShipping init");
@@ -26,6 +33,6 @@ public class ExpressInternationalShipping implements ShippingCostCalculator {
 
     @Override
     public double calculate(ShippingRequest r) {
-        return 25 + 4.5 * r.weightKg();
+        return baseFee + costPerKg * r.weightKg();
     }
 }

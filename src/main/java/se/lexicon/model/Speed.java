@@ -1,3 +1,3 @@
 package se.lexicon.model;
 
-public enum Speed {STANDARD, EXPRESS, OVERNIGHT}
+public enum Speed {STANDARD, EXPRESS,}
